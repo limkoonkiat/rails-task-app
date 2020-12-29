@@ -13,7 +13,7 @@
 
   <div class="field">
     <%= form.label :name %>
-    <%= form.text_field :name, placeholder:"Name" %>
+    <%= form.text_field :name, placeholder:"Name", required:true %>
   </div>
 
   <div class="field">
@@ -33,6 +33,13 @@
 
   <div class="field">
     <%= form.number_field :user_id, id: :task_user_id, value: current_user.id, type: :hidden %>
+  </div>
+
+  <div class="field">
+    <% unless current_user.tags.empty? %>
+      <%= form.label :tags %>
+      <%= form.collection_check_boxes :tag_ids, current_user.tags, :id, :name %>
+    <% end %>
   </div>
 
   <div class="actions">

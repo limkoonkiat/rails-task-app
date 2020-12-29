@@ -1,7 +1,4 @@
-<p>
-  <strong>Name:</strong>
-  <%= @task.name %>
-</p>
+<h1>Task: <%= @task.name %> </h1>
 
 <p>
   <strong>Description:</strong>
@@ -16,6 +13,13 @@
 <p>
   <strong>Completed:</strong>
   <%= @task.completed %>
+</p>
+
+<p>
+	<strong>Tags:</strong>
+	<% @task.tags.each do |tag| %>
+	  <%= link_to tag.name, tag %>
+	<% end %>
 </p>
 
 <%= link_to 'Edit', edit_task_path(@task) %> |
