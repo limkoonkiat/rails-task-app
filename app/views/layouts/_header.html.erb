@@ -45,10 +45,17 @@
         <% end %>
         
       </ul>
-      <form class="d-flex">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
+
+      <!-- Search Bar -->
+      <% if user_signed_in? %>
+        <%= form_tag(search_page_path, :method => "get", class: 'navbar-form navbar-left') do %>  
+          <div class="input-group">  
+            <%= search_field_tag :search, params[:search], placeholder: "Search Tasks", class: "form-control" %>  
+            <button class="btn btn-outline-secondary" type="submit">Search</button>
+          </div>
+      <% end %>  
+<% end %>
+
     </div>
   </div>
 </nav>

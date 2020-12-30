@@ -11,8 +11,12 @@
 </p>
 
 <p>
-  <strong>Completed:</strong>
-  <%= @task.completed %>
+  <strong>Status:</strong>
+  <% if @task.completed %>
+    <%= "Completed" %>
+  <% else %>
+    <%= "Incomplete" %>
+  <% end %>
 </p>
 
 <p>
