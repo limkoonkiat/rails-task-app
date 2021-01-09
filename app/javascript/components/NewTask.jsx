@@ -7,7 +7,7 @@ class NewTask extends Component {
     this.state = {
       name: "",
       description: "",
-      date: "",
+      date: new Date(Date.now()).toISOString().slice(0,10),
       completed: false,
       tags: []
     };
@@ -18,6 +18,7 @@ class NewTask extends Component {
 
   onChange(event) {
     this.setState({ [event.target.name]: event.target.value });
+
   }
 
   onSubmit(event) {
@@ -71,6 +72,7 @@ class NewTask extends Component {
                   name="name"
                   id="TaskName"
                   className="form-control"
+                  value={this.state.name}
                   required
                   onChange={this.onChange}
                 />
@@ -82,16 +84,18 @@ class NewTask extends Component {
                   id="taskDescription"
                   name="description"
                   rows="4"
+                  value={this.state.description}
                   onChange={this.onChange}
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="Date">Date</label>
+                <label htmlFor="taskDate">Date</label>
                   <input 
                   type="date" 
                   id="taskDate"
-                  className="form-control" 
+                  className="form-control"
                   required
+                  value={this.state.date}
                   onChange={this.onChange}
                   />
               </div>
@@ -101,6 +105,7 @@ class NewTask extends Component {
                   name="completed"
                   id="taskCompleted"
                   className="form-check-input"
+                  value={this.state.completed}
                   onChange={this.onChange}
                 />
                 <label className="form_check_label" htmlFor="taskCompleted">Completed</label>

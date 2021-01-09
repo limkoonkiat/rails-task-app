@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 class Task extends Component {
   constructor(props) {
     super(props);
-    this.state = { task: { description: ""} };
+    this.state = { task: { description: "", completed: false} };
 
     this.deleteTask = this.deleteTask.bind(this);
   }
@@ -73,7 +73,7 @@ class Task extends Component {
             </div>
             <div className="col-sm-12 col-lg-3">
                 <h5 className="mb-2">Date</h5>
-                {task.date}
+                {new Date(task.date).toLocaleString().split(",")[0]}
             </div>
             <div className="col-sm-12 col-lg-3">
                 <h5 className="mb-2">Status</h5>
