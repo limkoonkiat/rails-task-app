@@ -17,6 +17,13 @@ export default () => (
         >
           View Tasks
         </Link>
+        <Link
+          to="/tags"
+          className="btn btn-lg custom-button"
+          role="button"
+        >
+          View Tags
+        </Link>
       </div>
     </div>
   </div>
