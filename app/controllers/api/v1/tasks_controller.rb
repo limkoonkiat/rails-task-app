@@ -1,5 +1,5 @@
 class Api::V1::TasksController < ApplicationController
-  before_action :set_task, only: [:show, :edit, :update, :destroy]
+  before_action :set_task, only: [:show, :update, :destroy]
   #before_action :authenticate_user!
 
   # GET /tasks
@@ -15,41 +15,18 @@ class Api::V1::TasksController < ApplicationController
     render json: @task
   end
 
-  # GET /tasks/1/edit
-  def edit
-  end
-
   # POST /tasks
   # POST /tasks.json
   def create
     @task = current_user.tasks.create!(task_params)
     render json: @task
-
-    # respond_to do |format|
-    #   if @task.save
-    #     format.html { redirect_to @task, notice: 'Task was successfully created.' }
-    #     format.json { render :show, status: :created, location: @task }
-    #   else
-    #     format.html { render :new }
-    #     format.json { render json: @task.errors, status: :unprocessable_entity }
-    #   end
-    # end
   end
 
   # PATCH/PUT /tasks/1
   # PATCH/PUT /tasks/1.json
   def update
     @task.update(task_params)
-    json render: @task
-    # respond_to do |format|
-    #   if @task.update(task_params)
-    #     format.html { redirect_to @task, notice: 'Task was successfully updated.' }
-    #     format.json { render :show, status: :ok, location: @task }
-    #   else
-    #     format.html { render :edit }
-    #     format.json { render json: @task.errors, status: :unprocessable_entity }
-    #   end
-    # end
+    render json: @task
   end
 
   # DELETE /tasks/1
@@ -57,10 +34,6 @@ class Api::V1::TasksController < ApplicationController
   def destroy
     @task.destroy
     render json: { message: 'Task was successfully deleted!' }
-    # respond_to do |format|
-    #   format.html { redirect_to tasks_url, notice: 'Task was successfully deleted.' }
-    #   format.json { head :no_content }
-    # end
   end
 
   def search

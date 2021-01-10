@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 class Task extends Component {
   constructor(props) {
     super(props);
-    this.state = { task: { description: "", completed: false} };
+    this.state = { task: { description: ""} };
 
     this.deleteTask = this.deleteTask.bind(this);
   }
@@ -64,8 +64,8 @@ class Task extends Component {
 
     return (
       <div className="">
-          <h1>{"Task: " + task.name}</h1>
         <div className="container py-5">
+        <h1>{"Task: " + task.name}</h1>
           <div className="row">
             <div className="col-sm-12 col-lg-3">
                 <h5 className="mb-2">Description</h5>
@@ -76,16 +76,19 @@ class Task extends Component {
                 {new Date(task.date).toLocaleString().split(",")[0]}
             </div>
             <div className="col-sm-12 col-lg-3">
-                <h5 className="mb-2">Status</h5>
-                {task.completed ? "Completed" : "Incomplete"}
+                <h5 className="mb-2">Completed</h5>
+                {task.completed == 1 ? "Completed" : "Incomplete"}
             </div>
             <div className="col-sm-12 col-lg-2">
-              <button type="button" className="btn btn-danger" onClick={this.deleteTask}>
+              <Link to={`/tasks/${this.props.match.params.id}/edit`} className="btn btn-primary">
+                Edit Task
+              </Link>
+              <button type="button" className="btn btn-danger" onClick={this.deleteTask} data-confirm="Are you sure you want to delete this task?">
                 Delete Task
               </button>
             </div>
           </div>
-          <Link to="/tasks" className="btn btn-link">
+          <Link to="/tasks" className="btn btn-secondary">
             Back to tasks
           </Link>
         </div>

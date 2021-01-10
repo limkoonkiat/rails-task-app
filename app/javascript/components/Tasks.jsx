@@ -10,7 +10,7 @@ class Tasks extends Component {
   } 
     
   componentDidMount() {
-    const url = "/api/v1/tasks";
+    const url = '/api/v1/tasks';
     fetch(url)
       .then(response => {
         if (response.ok) {
@@ -29,8 +29,11 @@ render() {
         <div className="card mb-4">
           <div className="card-body">
             <h5 className="card-title">{task.name}</h5>
-            <Link to={`/tasks/${task.id}`} className="btn custom-button">
+            <Link to={`/tasks/${task.id}`} className="btn btn-dark">
               View Task
+            </Link>
+            <Link to={`/tasks/${task.id}/edit`} className="btn btn-primary">
+              Edit Task
             </Link>
           </div>
         </div>
@@ -49,7 +52,7 @@ render() {
         <div className="py-5">
           <main className="container">
             <div className="text-right mb-3">
-              <Link to="/task" className="btn custom-button">
+              <Link to="/tasks/new" className="btn btn-dark">
                 Create New Task
               </Link>
             </div>

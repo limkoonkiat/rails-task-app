@@ -3,9 +3,8 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :tasks
-      post 'tasks/create'
-      resources :tags
+      resources :tasks, except: [:new, :edit]
+      resources :tags, except: [:new, :edit]
     end
   end
 
@@ -17,5 +16,5 @@ Rails.application.routes.draw do
   root 'homepage#index'
 
   # For other paths
-  get '/*path', to: 'homepage#index', via: :all
+  get '/*path' => 'homepage#index'
 end
