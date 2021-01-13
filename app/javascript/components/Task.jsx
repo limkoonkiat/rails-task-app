@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 class Task extends Component {
   constructor(props) {
     super(props);
-    this.state = { task: { description: ""} };
+    this.state = { task: { name: "", description: "", date: "", completed: false, tag_ids: []}, tags: [] };
 
     this.deleteTask = this.deleteTask.bind(this);
   }
@@ -25,7 +25,7 @@ class Task extends Component {
         }
         throw new Error("Network response was not ok.");
       })
-      .then(response => this.setState({ task: response }))
+      .then(response => this.setState({ task: response.task, tags: response.task_tags }))
       .catch(() => this.props.history.push("/tasks"));
   }
 
@@ -56,11 +56,7 @@ class Task extends Component {
   }
 
   render() {
-    const { task } = this.state;
-    let description = "No description available.";
-    if (task.description.length != 0) {
-      description = task.description
-    } 
+    const { task, tags } = this.state;
 
     return (
       <div className="">
@@ -69,26 +65,38 @@ class Task extends Component {
           <div className="row">
             <div className="col-sm-12 col-lg-3">
                 <h5 className="mb-2">Description</h5>
-                {description}
+                {task.description.length != 0 ? task.description : "No description available."}
             </div>
             <div className="col-sm-12 col-lg-3">
                 <h5 className="mb-2">Date</h5>
                 {new Date(task.date).toLocaleString().split(",")[0]}
             </div>
             <div className="col-sm-12 col-lg-3">
-                <h5 className="mb-2">Completed</h5>
-                {task.completed == 1 ? "Completed" : "Incomplete"}
+                <h5 className="mb-2">Status</h5>
+                {task.completed ? "Completed" : "Incomplete"}
             </div>
+            <div className="col-sm-12 col-lg-3">
+                <h5 className="mb-2">Tags</h5>
+                {(tags.length != 0) 
+                  ? tags.map(tag => (
+                    <div key={tag.id}>
+                      <Link to={"/tags/" + tag.id}>{tag.name}</Link>
+                    </div>
+                  )) 
+                  : "This task has no tags."
+                }
+            </div>
+          
             <div className="col-sm-12 col-lg-2">
-              <Link to={`/tasks/${this.props.match.params.id}/edit`} className="btn btn-primary">
+              <Link to={`/tasks/${this.props.match.params.id}/edit`} className="btn btn-primary mt-3">
                 Edit Task
               </Link>
-              <button type="button" className="btn btn-danger" onClick={this.deleteTask} data-confirm="Are you sure you want to delete this task?">
+              <button type="button" className="btn btn-danger mt-3" onClick={this.deleteTask} data-confirm="Are you sure you want to delete this task?">
                 Delete Task
               </button>
             </div>
           </div>
-          <Link to="/tasks" className="btn btn-secondary">
+          <Link to="/tasks" className="btn btn-secondary mt-3">
             Back to tasks
           </Link>
         </div>

@@ -22,7 +22,7 @@ export default function TagForm(props) {
                   onChange={props.onChange}
                 />
               </div>
-              <button type="submit" className="btn custom-button mt-3">
+              <button type="submit" className="btn btn-dark mt-3">
                 {props.submit_button_label}
               </button>
               <Link to={props.cancel_action} className="btn btn-link mt-3">

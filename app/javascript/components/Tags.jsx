@@ -22,14 +22,14 @@ class Tags extends Component {
       .catch(() => this.props.history.push("/"));
   }
 
-render() {
+  render() {
     const { tags } = this.state;
     const allTags = tags.map((tag, index) => (
       <div key={index} className="col-md-6 col-lg-4">
         <div className="card mb-4">
           <div className="card-body">
             <h5 className="card-title">{tag.name}</h5>
-            <Link to={`/tags/${tag.id}`} className="btn custom-button">
+            <Link to={`/tags/${tag.id}`} className="btn btn-dark mt-3">
               View Tag
             </Link>
           </div>
@@ -49,14 +49,14 @@ render() {
         <div className="py-5">
           <main className="container">
             <div className="text-right mb-3">
-              <Link to="/tags/new" className="btn btn-dark">
+              <Link to="/tags/new" className="btn btn-dark mt-3">
                 Create New Tag
               </Link>
             </div>
             <div className="row">
               {tags.length > 0 ? allTags : noTag}
             </div>
-            <Link to="/" className="btn btn-link">
+            <Link to="/" className="btn btn-link mt-3">
               Home
             </Link>
           </main>

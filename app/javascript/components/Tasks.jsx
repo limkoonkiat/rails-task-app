@@ -22,17 +22,17 @@ class Tasks extends Component {
       .catch(() => this.props.history.push("/"));
   }
 
-render() {
+  render() {
     const { tasks } = this.state;
     const allTasks = tasks.map((task, index) => (
       <div key={index} className="col-md-6 col-lg-4">
         <div className="card mb-4">
           <div className="card-body">
             <h5 className="card-title">{task.name}</h5>
-            <Link to={`/tasks/${task.id}`} className="btn btn-dark">
+            <Link to={`/tasks/${task.id}`} className="btn btn-dark mt-3">
               View Task
             </Link>
-            <Link to={`/tasks/${task.id}/edit`} className="btn btn-primary">
+            <Link to={`/tasks/${task.id}/edit`} className="btn btn-primary mt-3">
               Edit Task
             </Link>
           </div>
@@ -52,14 +52,14 @@ render() {
         <div className="py-5">
           <main className="container">
             <div className="text-right mb-3">
-              <Link to="/tasks/new" className="btn btn-dark">
+              <Link to="/tasks/new" className="btn btn-dark mt-3">
                 Create New Task
               </Link>
             </div>
             <div className="row">
               {tasks.length > 0 ? allTasks : noTask}
             </div>
-            <Link to="/" className="btn btn-link">
+            <Link to="/" className="btn btn-link mt-3">
               Home
             </Link>
           </main>
@@ -69,4 +69,4 @@ render() {
   }
 }
 
-  export default Tasks;
+export default Tasks;

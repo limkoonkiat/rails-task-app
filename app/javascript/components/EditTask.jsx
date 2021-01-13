@@ -10,11 +10,13 @@ class EditTask extends Component {
       description: "",
       date: new Date(Date.now()).toISOString().slice(0,10),
       completed: false,
-      tags: []
+      tag_ids: [],
+      allTags: []
     };
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.handleMultipleTagCheckboxes = this.handleMultipleTagCheckboxes.bind(this);
   }
 
   onChange(event) {
@@ -27,10 +29,28 @@ class EditTask extends Component {
     });
   }
 
+  handleMultipleTagCheckboxes(event) {
+    const target = event.target;
+    let id = target.value;
+    let newTagIds;
+    if (target.checked && !this.state.tag_ids.includes(id)) {
+      newTagIds = [...this.state.tag_ids, id]
+      
+    } else if (!target.checked) {
+      newTagIds = this.state.tag_ids.filter(x => x != id)
+    } else {
+      newTagIds = this.state.tag_ids;
+    }
+
+    this.setState({
+      tag_ids: newTagIds
+    });
+  }
+
   onSubmit(event) {
     event.preventDefault();
     const url = `/api/v1/tasks/${this.props.match.params.id}`;
-    const { name, description, date, completed, tags } = this.state;
+    const { name, description, date, completed, tag_ids} = this.state;
 
     if (name.length == 0)
       return;
@@ -41,7 +61,7 @@ class EditTask extends Component {
             description,
             date, 
             completed,
-            tags
+            tag_ids
         }
     };
 
@@ -65,16 +85,31 @@ class EditTask extends Component {
   }
 
   componentDidMount() {
-    const url = `/api/v1/tasks/${this.props.match.params.id}`;
 
-    fetch(url)
+    // For all tags
+    fetch('/api/v1/tags')
       .then(response => {
         if (response.ok) {
           return response.json();
         }
         throw new Error("Network response was not ok.");
       })
-      .then(response => this.setState({ ...response }))
+      .then(response => this.setState({ allTags: response }))
+      .catch(() => this.props.history.push("/"));
+
+    // For task
+    fetch(`/api/v1/tasks/${this.props.match.params.id}`)
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error("Network response was not ok.");
+      })
+      .then(response => this.setState({ name: response.task.name, 
+        description: response.task.description,  
+        date: response.task.date, 
+        completed: response.task.completed, 
+        tag_ids: response.task_tags.map(tag => tag.id)}))
       .catch(() => this.props.history.push("/tasks"));
   }
 
@@ -83,10 +118,11 @@ class EditTask extends Component {
       <TaskForm 
       onSubmit={this.onSubmit} 
       onChange={this.onChange} 
-      task={this.state} 
+      handleMultipleTagCheckboxes={this.handleMultipleTagCheckboxes}
+      data={this.state}
       form_title="Edit Task"
       submit_button_label="Update Task"
-      cancel_action={`/tasks/${this.props.match.params.id}`}
+      cancel_path={`/tasks/${this.props.match.params.id}`}
       cancel_button_label="Back to Task"
       />
     );

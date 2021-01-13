@@ -1,6 +1,6 @@
 class Api::V1::TasksController < ApplicationController
   before_action :set_task, only: [:show, :update, :destroy]
-  #before_action :authenticate_user!
+  before_action :authenticate_user!
 
   # GET /tasks
   # GET /tasks.json
@@ -12,7 +12,7 @@ class Api::V1::TasksController < ApplicationController
   # GET /tasks/1
   # GET /tasks/1.json
   def show
-    render json: @task
+    render json: {task: @task, task_tags: @task.tags}
   end
 
   # POST /tasks
@@ -49,6 +49,6 @@ class Api::V1::TasksController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def task_params
-      params.require(:task).permit(:name, :description, :date, :completed, :user_id, { tag_ids:[] })
+      params.require(:task).permit(:name, :description, :date, :completed, :user_id, {tag_ids: []} )
     end
 end
