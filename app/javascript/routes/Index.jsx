@@ -23,6 +23,8 @@ export default (
       <Route exact path="/tags/new" component={NewTag} />
       <Route exact path="/tags/:id" component={Tag} />
       <Route exact path="/tags/:id/edit" component={EditTag} /> 
+
+      <Route exact path='*' component={Home} />
     </Switch>
   </Router>
 );
