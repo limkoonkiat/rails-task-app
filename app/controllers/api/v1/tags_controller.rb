@@ -5,14 +5,15 @@ class Api::V1::TagsController < ApplicationController
   # GET /tags
   # GET /tags.json
   def index
-    @tags = Tag.all
+    @tags = Tag.all.order(created_at: :desc)
     render json: @tags
   end
 
   # GET /tags/1
   # GET /tags/1.json
   def show
-    render json: @tag
+    @tag_tasks = @tag.tasks.map{|task| task.attributes.merge(tags: Task.find(task.id).tags)} # Workaround for tasks not containing its tags
+    render json: {tag: @tag, tag_tasks: @tag_tasks}
   end
 
   # POST /tags

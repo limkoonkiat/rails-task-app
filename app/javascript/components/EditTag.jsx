@@ -1,13 +1,10 @@
-import React, {Component} from "react";
-import { Link } from "react-router-dom";
+import React, { Component } from "react";
 import TagForm from "./TagForm";
 
 class EditTag extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      name: ""
-    };
+    this.state = { name: "" };
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -26,9 +23,9 @@ class EditTag extends Component {
       return;
 
     const body = {
-        tag: {
-            name
-        }
+      tag: {
+        name
+      }
     };
 
     const token = document.querySelector('meta[name="csrf-token"]').content;
@@ -60,20 +57,20 @@ class EditTag extends Component {
         }
         throw new Error("Network response was not ok.");
       })
-      .then(response => this.setState({ ...response }))
+      .then(response => this.setState({ name: response.tag.name }))
       .catch(() => this.props.history.push("/tags"));
   }
 
   render() {
     return (
-      <TagForm 
-      onSubmit={this.onSubmit} 
-      onChange={this.onChange} 
-      tag={this.state} 
-      form_title="Edit Tag"
-      submit_button_label="Update Tag"
-      cancel_action={`/tags/${this.props.match.params.id}`}
-      cancel_button_label="Back to Tag"
+      <TagForm
+        onSubmit={this.onSubmit}
+        onChange={this.onChange}
+        data={this.state}
+        form_title="Edit Tag"
+        submit_button_label="Update Tag"
+        cancel_path={`/tags/${this.props.match.params.id}`}
+        cancel_button_label="Back to Tag"
       />
     );
   }

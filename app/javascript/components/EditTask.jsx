@@ -1,5 +1,4 @@
-import React, {Component} from "react";
-import { Link } from "react-router-dom";
+import React, { Component } from "react";
 import TaskForm from "./TaskForm";
 
 class EditTask extends Component {
@@ -8,7 +7,7 @@ class EditTask extends Component {
     this.state = {
       name: "",
       description: "",
-      date: new Date(Date.now()).toISOString().slice(0,10),
+      date: new Date(Date.now()).toISOString().slice(0, 10),
       completed: false,
       tag_ids: [],
       allTags: []
@@ -35,7 +34,7 @@ class EditTask extends Component {
     let newTagIds;
     if (target.checked && !this.state.tag_ids.includes(id)) {
       newTagIds = [...this.state.tag_ids, id]
-      
+
     } else if (!target.checked) {
       newTagIds = this.state.tag_ids.filter(x => x != id)
     } else {
@@ -50,19 +49,19 @@ class EditTask extends Component {
   onSubmit(event) {
     event.preventDefault();
     const url = `/api/v1/tasks/${this.props.match.params.id}`;
-    const { name, description, date, completed, tag_ids} = this.state;
+    const { name, description, date, completed, tag_ids } = this.state;
 
     if (name.length == 0)
       return;
 
     const body = {
-        task: {
-            name,
-            description,
-            date, 
-            completed,
-            tag_ids
-        }
+      task: {
+        name,
+        description,
+        date,
+        completed,
+        tag_ids
+      }
     };
 
     const token = document.querySelector('meta[name="csrf-token"]').content;
@@ -105,25 +104,27 @@ class EditTask extends Component {
         }
         throw new Error("Network response was not ok.");
       })
-      .then(response => this.setState({ name: response.task.name, 
-        description: response.task.description,  
-        date: response.task.date, 
-        completed: response.task.completed, 
-        tag_ids: response.task_tags.map(tag => tag.id)}))
+      .then(response => this.setState({
+        name: response.task.name,
+        description: response.task.description,
+        date: response.task.date,
+        completed: response.task.completed,
+        tag_ids: response.task_tags.map(tag => tag.id)
+      }))
       .catch(() => this.props.history.push("/tasks"));
   }
 
   render() {
     return (
-      <TaskForm 
-      onSubmit={this.onSubmit} 
-      onChange={this.onChange} 
-      handleMultipleTagCheckboxes={this.handleMultipleTagCheckboxes}
-      data={this.state}
-      form_title="Edit Task"
-      submit_button_label="Update Task"
-      cancel_path={`/tasks/${this.props.match.params.id}`}
-      cancel_button_label="Back to Task"
+      <TaskForm
+        onSubmit={this.onSubmit}
+        onChange={this.onChange}
+        handleMultipleTagCheckboxes={this.handleMultipleTagCheckboxes}
+        data={this.state}
+        form_title="Edit Task"
+        submit_button_label="Update Task"
+        cancel_path={`/tasks/${this.props.match.params.id}`}
+        cancel_button_label="Back to Task"
       />
     );
   }

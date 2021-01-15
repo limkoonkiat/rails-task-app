@@ -5,8 +5,8 @@ class Api::V1::TasksController < ApplicationController
   # GET /tasks
   # GET /tasks.json
   def index
-    @tasks = Task.all #.order(created_at: :desc)
-    @tasks = @tasks.map{|task| task.attributes.merge(tags: Task.find(task.id).tags)} # Workaround for @tasks not containing its tags
+    @tasks = Task.all.order(created_at: :desc)
+    @tasks = @tasks.map{|task| task.attributes.merge(tags: Task.find(task.id).tags)} # Workaround for tasks not containing its tags
     render json: @tasks
   end
 

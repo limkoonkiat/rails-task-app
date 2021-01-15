@@ -1,5 +1,5 @@
-import React, {Component} from "react";
-import {LinkContainer} from 'react-router-bootstrap';
+import React, { Component } from "react";
+import { LinkContainer } from 'react-router-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import TasksTable from "./TasksTable";
@@ -10,11 +10,11 @@ class Tasks extends Component {
     this.state = {
       tasks: []
     };
-    
-  this.toggleComplete = this.toggleComplete.bind(this);
-  this.deleteTask = this.deleteTask.bind(this);
-  } 
-    
+
+    this.toggleComplete = this.toggleComplete.bind(this);
+    this.deleteTask = this.deleteTask.bind(this);
+  }
+
   componentDidMount() {
     const url = '/api/v1/tasks';
     fetch(url)
@@ -28,6 +28,7 @@ class Tasks extends Component {
       .catch(() => this.props.history.push("/"));
   }
 
+  // For TasksTable. Also exists in Tag. 
   toggleComplete(event) {
     const target = event.target;
     const taskId = target.value;
@@ -60,6 +61,7 @@ class Tasks extends Component {
       .catch(error => console.log(error.message));
   }
 
+  // For TasksTable. Also exists in Tag. 
   deleteTask(event) {
     const target = event.target;
     const id = target.value;
@@ -80,27 +82,34 @@ class Tasks extends Component {
         }
         throw new Error("Network response was not ok.");
       })
-      .then(() => this.props.history.push("/")) // Force refresh of tasks page
+      .then(() => this.props.history.push("/")) // Force refresh of tasks page by going to the homepage first
       .then(() => this.props.history.push("/tasks"))
       .catch(error => console.log(error.message));
   }
 
   render() {
     return (
-      <Container>
+      <Container className="py-5">
         <h1 className="display-4">Tasks</h1>
-          
-        <div className="text-right mb-3">
+
+        <Container className="text-right mb-3">
           <LinkContainer to="/tasks/new">
-            <Button variant="dark mt-3">Create New Task</Button>
+            <Button variant="dark mt-3">Add New Task</Button>
           </LinkContainer>
-        </div>
-        
-        <TasksTable
-        data={this.state}
-        toggleComplete={this.toggleComplete}
-        deleteTask={this.deleteTask}
-        />
+        </Container>
+
+        {this.state.tasks.length > 0
+          ?
+          <TasksTable
+            tasks={this.state.tasks}
+            toggleComplete={this.toggleComplete}
+            deleteTask={this.deleteTask}
+          />
+          :
+          <Container className="vw-100 vh-50 d-flex align-items-center justify-content-center">
+            <h4>No tasks yet.</h4>
+          </Container>
+        }
 
         <LinkContainer to={`/`}>
           <Button variant="primary">Home</Button>

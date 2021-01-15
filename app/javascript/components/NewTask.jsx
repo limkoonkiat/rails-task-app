@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import TaskForm from "./TaskForm";
 
 class NewTask extends Component {
@@ -7,7 +7,7 @@ class NewTask extends Component {
     this.state = {
       name: "",
       description: "",
-      date: new Date(Date.now()).toISOString().slice(0,10),
+      date: new Date(Date.now()).toISOString().slice(0, 10),
       completed: false,
       tag_ids: [],
       allTags: []
@@ -27,7 +27,7 @@ class NewTask extends Component {
         }
         throw new Error("Network response was not ok.");
       })
-      .then(response => this.setState({allTags: response }))
+      .then(response => this.setState({ allTags: response }))
       .catch(() => this.props.history.push("/"));
   }
 
@@ -47,7 +47,7 @@ class NewTask extends Component {
     let newTagIds;
     if (target.checked && !this.state.tag_ids.includes(id)) {
       newTagIds = [...this.state.tag_ids, id]
-      
+
     } else if (!target.checked) {
       newTagIds = this.state.tag_ids.filter(x => x != id)
     } else {
@@ -71,7 +71,7 @@ class NewTask extends Component {
       task: {
         name,
         description,
-        date, 
+        date,
         completed,
         tag_ids
       }
@@ -98,15 +98,15 @@ class NewTask extends Component {
 
   render() {
     return (
-      <TaskForm 
-      onSubmit={this.onSubmit} 
-      onChange={this.onChange} 
-      handleMultipleTagCheckboxes={this.handleMultipleTagCheckboxes}
-      data={this.state}
-      form_title="Add a New Task"
-      submit_button_label="Create Task"
-      cancel_path="/tasks" 
-      cancel_button_label="Back to All Tasks"
+      <TaskForm
+        onSubmit={this.onSubmit}
+        onChange={this.onChange}
+        handleMultipleTagCheckboxes={this.handleMultipleTagCheckboxes}
+        data={this.state}
+        form_title="Add a New Task"
+        submit_button_label="Create Task"
+        cancel_path="/tasks"
+        cancel_button_label="Back to All Tasks"
       />
     );
   }

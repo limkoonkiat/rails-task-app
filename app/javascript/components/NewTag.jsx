@@ -1,17 +1,10 @@
-import React, {Component} from "react";
-import { Link } from "react-router-dom";
+import React, { Component } from "react";
 import TagForm from "./TagForm";
 
 class NewTag extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      name: "",
-      description: "",
-      date: new Date(Date.now()).toISOString().slice(0,10),
-      completed: false,
-      tags: []
-    };
+    this.state = { name: "" };
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -56,14 +49,14 @@ class NewTag extends Component {
 
   render() {
     return (
-      <TagForm 
-      onSubmit={this.onSubmit} 
-      onChange={this.onChange} 
-      tag={this.state} 
-      form_title="Add a New Tag"
-      submit_button_label="Create Tag"
-      cancel_action="/tags" 
-      cancel_button_label="Back to All Tags"
+      <TagForm
+        onSubmit={this.onSubmit}
+        onChange={this.onChange}
+        data={this.state}
+        form_title="Add a New Tag"
+        submit_button_label="Create Tag"
+        cancel_path="/tags"
+        cancel_button_label="Back to All Tags"
       />
     );
   }

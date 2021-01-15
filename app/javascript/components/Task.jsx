@@ -1,14 +1,17 @@
-import React, {Component} from "react";
-import { Link } from "react-router-dom";
+import React, { Component } from "react";
+import { LinkContainer } from "react-router-bootstrap";
+import Button from 'react-bootstrap/Button';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
 
 class Task extends Component {
   constructor(props) {
     super(props);
-    this.state = { task: { name: "", description: "", date: "", completed: false, tag_ids: []}, tags: [] };
+    this.state = { task: { name: "", description: "", date: "", completed: false, tag_ids: [] }, tags: [] };
 
     this.deleteTask = this.deleteTask.bind(this);
   }
-  
+
   componentDidMount() {
     const {
       match: {
@@ -59,48 +62,48 @@ class Task extends Component {
     const { task, tags } = this.state;
 
     return (
-      <div className="">
-        <div className="container py-5">
+      <Container className="py-5">
         <h1>{"Task: " + task.name}</h1>
-          <div className="row">
-            <div className="col-sm-12 col-lg-3">
-                <h5 className="mb-2">Description</h5>
-                {task.description.length != 0 ? task.description : "No description available."}
-            </div>
-            <div className="col-sm-12 col-lg-3">
-                <h5 className="mb-2">Date</h5>
-                {new Date(task.date).toLocaleString().split(",")[0]}
-            </div>
-            <div className="col-sm-12 col-lg-3">
-                <h5 className="mb-2">Status</h5>
-                {task.completed ? "Completed" : "Incomplete"}
-            </div>
-            <div className="col-sm-12 col-lg-3">
-                <h5 className="mb-2">Tags</h5>
-                {(tags.length != 0) 
-                  ? tags.map(tag => (
-                    <div key={tag.id}>
-                      <Link to={"/tags/" + tag.id}>{tag.name}</Link>
-                    </div>
-                  )) 
-                  : "This task has no tags."
-                }
-            </div>
-          
-            <div className="col-sm-12 col-lg-2">
-              <Link to={`/tasks/${this.props.match.params.id}/edit`} className="btn btn-primary mt-3">
-                Edit Task
-              </Link>
-              <button type="button" className="btn btn-danger mt-3" onClick={this.deleteTask}>
-                Delete Task
-              </button>
-            </div>
-          </div>
-          <Link to="/tasks" className="btn btn-secondary mt-3">
-            Back to tasks
-          </Link>
-        </div>
-      </div>
+
+        <Row>
+          <h5 className="mb-2">Description</h5>
+          {task.description.length != 0 ? task.description : "No description available."}
+        </Row>
+        <Row>
+          <h5 className="mb-2">Date</h5>
+          {new Date(task.date).toLocaleString().split(",")[0]}
+        </Row>
+        <Row>
+          <h5 className="mb-2">Status</h5>
+          {task.completed ? "Completed" : "Incomplete"}
+        </Row>
+        <Row>
+          <h5 className="mb-2">Tags</h5>
+          {(tags.length != 0)
+            ? tags.map(tag => (
+              <div key={tag.id}>
+                <LinkContainer to={`/tags/${tag.id}`}>
+                  <Button variant="info m-1">{tag.name}</Button>
+                </LinkContainer>
+              </div>
+            ))
+            : "This task has no tags."
+          }
+        </Row>
+
+        <Row>
+          <LinkContainer to={`/tasks/${this.props.match.params.id}/edit`}>
+            <Button variant="primary m-1">Edit Task</Button>
+          </LinkContainer>
+
+          <Button variant="danger m-1" onClick={this.deleteTask}>Delete Task</Button>
+
+          <LinkContainer to={"/tasks"}>
+            <Button variant="secondary m-1">Back to all Tasks</Button>
+          </LinkContainer>
+        </Row>
+
+      </Container>
     );
   }
 }
