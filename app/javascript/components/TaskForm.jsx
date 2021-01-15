@@ -1,5 +1,7 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import {LinkContainer} from 'react-router-bootstrap';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 
 export default function TaskForm(props) {
 
@@ -10,88 +12,81 @@ export default function TaskForm(props) {
           <h1 className="font-weight-normal mb-5">
             {props.form_title}
           </h1>
-          <form onSubmit={props.onSubmit}>
+          <Form onSubmit={props.onSubmit}>
 
-            <div className="form-group">
-              <label htmlFor="taskName">Name</label>
-              <input
-                type="string"
+            <Form.Group controlId="taskName">
+              <Form.Label>Name</Form.Label>
+              <Form.Control 
                 name="name"
-                id="taskName"
-                className="form-control"
-                value={props.data.name}
+                type="string"
+                placeholder="Enter name"
                 required
-                onChange={props.onChange}
+                value={props.data.name}
+                onChange={props.onChange} 
               />
-            </div>
+            </Form.Group>
 
-            <div className="form-group">
-              <label htmlFor="taskDescription">Description</label>
-              <textarea
+            <Form.Group controlId="taskDescription">
+              <Form.Label>Description</Form.Label>
+              <Form.Control 
+                as="textarea"
                 name="description"
-                id="taskDescription"
-                className="form-control"
+                type="text"
+                placeholder="Enter description"
                 rows="4"
                 value={props.data.description}
-                onChange={props.onChange}
+                onChange={props.onChange} 
               />
-            </div>
+            </Form.Group>
 
-            <div className="form-group">
-              <label htmlFor="taskDate">Date</label>
-                <input 
+            <Form.Group controlId="taskDate">
+              <Form.Label>Date</Form.Label>
+              <Form.Control 
+                name="date"
                 type="date"
-                name="date" 
-                id="taskDate"
-                className="form-control"
-                value={props.data.date}
                 required
-                onChange={props.onChange}
-                />
-            </div>
-            
-            <div className="form-check">
-              <input
-                type="checkbox"
+                value={props.data.date}
+                onChange={props.onChange} 
+              />
+            </Form.Group>
+
+            <Form.Group controlId="taskCompleted">
+              <Form.Check 
                 name="completed"
-                id="taskCompleted"
-                className="form-check-input"
+                type="checkbox"
+                label="Completed"
                 checked={props.data.completed}
                 onChange={props.onChange}
               />
-              <label className="form_check_label" htmlFor="taskCompleted">Completed</label>
-            </div>
+            </Form.Group>
 
-            <label htmlFor="taskTags">
-              Tags 
+            <Form.Group controlId="taskTags">
+              Tags
               <small> (You can select more than one)</small>
-            </label>
-            <div id="taskTags">
-              {props.data.tag_ids.toString()} 
               {props.data.allTags.map(tag => {
-                  return <div className="form-group">
-                    <input
-                    type="checkbox"
-                    key={tag.id}
-                    value={tag.id}
-                    id={"task_tag_ids_" + tag.id.toString()}
-                    defaultChecked={props.data.tag_ids.includes(tag.id)}
-                    onChange={props.handleMultipleTagCheckboxes}
+                  return <div key={tag.id} className="mb-3">
+                    <Form.Check 
+                      name={"task_tag_ids_" + tag.id.toString()}
+                      type="checkbox"
+                      label={tag.name}
+                      id={"task_tag_ids_" + tag.id.toString()}
+                      defaultChecked={props.data.tag_ids.includes(tag.id)}
+                      value={tag.id}
+                      onChange={props.handleMultipleTagCheckboxes}
                     />
-                    <label className="form-check-label" htmlFor={"task_tag_ids_" + tag.id.toString()}>
-                      {tag.name}
-                    </label>
                   </div>
               })}
-            </div>
+            </Form.Group>
 
-            <button type="submit" className="btn btn-dark mt-3">
+            <Button type="submit" variant="dark m-1">
               {props.submit_button_label}
-            </button>
-            <Link to={props.cancel_path} className="btn btn-link mt-3">
-              {props.cancel_button_label}
-            </Link>
-          </form>
+            </Button>
+            <LinkContainer to={props.cancel_path}>
+              <Button variant="light m-1">
+                {props.cancel_button_label}
+              </Button>
+            </LinkContainer>
+          </Form>
         </div>
       </div>
     </div>

@@ -12,14 +12,14 @@ export default () => (
         <hr className="my-4" />
         <Link
           to="/tasks"
-          className="btn btn-lg custom-button"
+          className="btn btn-lg btn-dark"
           role="button"
         >
           View Tasks
         </Link>
         <Link
           to="/tags"
-          className="btn btn-lg custom-button"
+          className="btn btn-lg btn-dark"
           role="button"
         >
           View Tags

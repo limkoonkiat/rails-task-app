@@ -91,7 +91,7 @@ class Task extends Component {
               <Link to={`/tasks/${this.props.match.params.id}/edit`} className="btn btn-primary mt-3">
                 Edit Task
               </Link>
-              <button type="button" className="btn btn-danger mt-3" onClick={this.deleteTask} data-confirm="Are you sure you want to delete this task?">
+              <button type="button" className="btn btn-danger mt-3" onClick={this.deleteTask}>
                 Delete Task
               </button>
             </div>
