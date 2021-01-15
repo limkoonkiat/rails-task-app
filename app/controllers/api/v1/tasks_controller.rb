@@ -6,6 +6,7 @@ class Api::V1::TasksController < ApplicationController
   # GET /tasks.json
   def index
     @tasks = Task.all #.order(created_at: :desc)
+    @tasks = @tasks.map{|task| task.attributes.merge(tags: Task.find(task.id).tags)} # Workaround for @tasks not containing its tags
     render json: @tasks
   end
 
@@ -33,7 +34,7 @@ class Api::V1::TasksController < ApplicationController
   # DELETE /tasks/1.json
   def destroy
     @task.destroy
-    render json: { message: 'Task was successfully deleted!' }
+    render json: { message: 'Task was successfully deleted!' }, status: :ok
   end
 
   def search
@@ -49,6 +50,6 @@ class Api::V1::TasksController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def task_params
-      params.require(:task).permit(:name, :description, :date, :completed, :user_id, {tag_ids: []} )
+      params.require(:task).permit(:name, :description, :date, :completed, :user_id, tag_ids: [] )
     end
 end
