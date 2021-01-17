@@ -13,7 +13,9 @@ class Home extends Component {
   render() {
     return (
       <>
-        <NavBar />
+        <NavBar 
+        history={this.props.history}
+        />
         <div className="vw-100 vh-100 primary-color d-flex align-items-center justify-content-center">
           <Jumbotron fluid className="bg-white">
             <Container>

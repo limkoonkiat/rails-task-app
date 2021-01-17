@@ -4,16 +4,16 @@ import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import TasksTable from "./TasksTable";
 
-class Tasks extends Component {
+class Search extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tasks: []
+      results: []
     };
   }
 
   componentDidMount() {
-    const url = '/api/v1/tasks';
+    const url = window.location.href.replace("search", "/api/v1/search"); // Get api location from url location
     fetch(url)
       .then(response => {
         if (response.ok) {
@@ -21,31 +21,26 @@ class Tasks extends Component {
         }
         throw new Error("Network response was not ok.");
       })
-      .then(response => this.setState({ tasks: response }))
+      .then(response => this.setState({ results: response }))
       .catch(() => this.props.history.push("/"));
   }
 
   render() {
     return (
       <Container className="py-5">
-        <h1 className="display-4">Tasks</h1>
+        <h1 className="display-4">Search Results</h1>
 
-        <Container className="text-right mb-3">
-          <LinkContainer to="/tasks/new">
-            <Button variant="dark mt-3">Add New Task</Button>
-          </LinkContainer>
-        </Container>
+        {this.state.results.length > 0
 
-        {this.state.tasks.length > 0
           ?
           <TasksTable
-            tasks={this.state.tasks}
+            tasks={this.state.results}
             history={this.props.history}
-            page_path={`/tasks`}
+            page_path={"/search" + window.location.href.split("/search")[1]} // Get the url from /search onwards
           />
           :
           <Container className="vw-100 vh-50 d-flex align-items-center justify-content-center">
-            <h4>No tasks yet.</h4>
+            <h4>No tasks found.</h4>
           </Container>
         }
 
@@ -57,4 +52,4 @@ class Tasks extends Component {
   }
 }
 
-export default Tasks;
+export default Search;

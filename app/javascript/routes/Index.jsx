@@ -9,11 +9,14 @@ import Tags from "../components/Tags";
 import Tag from "../components/Tag";
 import NewTag from "../components/NewTag";
 import EditTag from "../components/EditTag";
+import Search from "../components/Search";
 
 export default (
   <Router>
     <Switch>
       <Route exact path="/" component={Home} />
+      <Route exact path="/search" component={Search} />
+
       <Route exact path="/tasks" component={Tasks} />
       <Route exact path="/tasks/new" component={NewTask} />
       <Route exact path="/tasks/:id" component={Task} /> 

@@ -11,8 +11,6 @@ class Tag extends Component {
     this.state = { tag: { name: "" }, tag_tasks: [] };
 
     this.deleteTag = this.deleteTag.bind(this);
-    this.toggleComplete = this.toggleComplete.bind(this);
-    this.deleteTask = this.deleteTask.bind(this);
   }
 
   componentDidMount() {
@@ -61,65 +59,6 @@ class Tag extends Component {
       .catch(error => console.log(error.message));
   }
 
-  // For TasksTable. Also exists in Tasks. 
-  toggleComplete(event) {
-    const target = event.target;
-    const taskId = target.value;
-    let task = this.state.tag_tasks.find(t => t.id == taskId);
-    task.completed = !task.completed;
-
-    event.preventDefault();
-    const url = `/api/v1/tasks/${taskId}`;
-
-    const body = {
-      task
-    }
-
-    const token = document.querySelector('meta[name="csrf-token"]').content;
-    fetch(url, {
-      method: "PUT",
-      headers: {
-        "X-CSRF-Token": token,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(body)
-    })
-      .then(response => {
-        if (response.ok) {
-          return response.json();
-        }
-        throw new Error("Network response was not ok.");
-      })
-      .then(() => this.props.history.push(`/tags/${this.props.match.params.id}`))
-      .catch(error => console.log(error.message));
-  }
-
-  // For TasksTable. Also exists in Tasks. 
-  deleteTask(event) {
-    const target = event.target;
-    const id = target.value;
-
-    const url = `/api/v1/tasks/${id}`;
-    const token = document.querySelector('meta[name="csrf-token"]').content;
-
-    fetch(url, {
-      method: "DELETE",
-      headers: {
-        "X-CSRF-Token": token,
-        "Content-Type": "application/json"
-      }
-    })
-      .then(response => {
-        if (response.ok) {
-          return response.json();
-        }
-        throw new Error("Network response was not ok.");
-      })
-      .then(() => this.props.history.push("/")) // Force refresh of tasks page by going to the homepage first
-      .then(() => this.props.history.push(`/tags/${this.props.match.params.id}`))
-      .catch(error => console.log(error.message));
-  }
-
   render() {
     const { tag, tag_tasks } = this.state;
 
@@ -133,8 +72,8 @@ class Tag extends Component {
           ?
           <TasksTable
             tasks={this.state.tag_tasks}
-            toggleComplete={this.toggleComplete}
-            deleteTask={this.deleteTask}
+            history={this.props.history}
+            page_path={`/tags/${this.props.match.params.id}`}
           />
           :
           <Container className="vw-100 vh-50 d-flex align-items-center justify-content-center">

@@ -37,11 +37,6 @@ class Api::V1::TasksController < ApplicationController
     render json: { message: 'Task was successfully deleted!' }, status: :ok
   end
 
-  def search
-    @parameter = params[:search].downcase  
-    @results = Task.all.where("lower(name) LIKE :search OR lower(description) LIKE :search", search: "%#{@parameter}%").uniq
-  end
-
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_task
