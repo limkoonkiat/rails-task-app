@@ -6,7 +6,7 @@ Rails.application.routes.draw do
       resources :tasks, except: [:new, :edit]
       resources :tags, except: [:new, :edit]
       
-      get 'search' => 'search#search'
+      get 'search' => 'navigation#search'
     end
   end
 

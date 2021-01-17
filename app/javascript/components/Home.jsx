@@ -12,28 +12,24 @@ class Home extends Component {
 
   render() {
     return (
-      <>
-        <NavBar 
-        history={this.props.history}
-        />
-        <div className="vw-100 vh-100 primary-color d-flex align-items-center justify-content-center">
-          <Jumbotron fluid className="bg-white">
-            <Container>
-              <h1 className="display-4">Welcome!</h1>
-              <p className="lead">
+      <div className="vw-100 vh-100 primary-color d-flex align-items-center justify-content-center">
+        <Jumbotron fluid className="bg-white">
+          <Container>
+            <h1 className="display-4">Welcome!</h1>
+            <p className="lead">
               Task tracker.
               </p>
-              <hr className="my-4" />
-              <LinkContainer to="/tasks">
-                <Button variant="dark m-1" size="lg">View Tasks</Button>
-              </LinkContainer>
-              <LinkContainer to="/tags">
-                <Button variant="dark m-1" size="lg">View Tags</Button>
-              </LinkContainer>
-            </Container>
-          </Jumbotron>
-        </div>
-      </>
+            <hr className="my-4" />
+            <LinkContainer to="/tasks">
+              <Button variant="dark m-1" size="lg">View Tasks</Button>
+            </LinkContainer>
+            <LinkContainer to="/tags">
+              <Button variant="dark m-1" size="lg">View Tags</Button>
+            </LinkContainer>
+          </Container>
+        </Jumbotron>
+      </div>
+
     )
   }
 }

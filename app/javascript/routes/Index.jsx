@@ -10,9 +10,11 @@ import Tag from "../components/Tag";
 import NewTag from "../components/NewTag";
 import EditTag from "../components/EditTag";
 import Search from "../components/Search";
+import NavBar from "../components/NavBar";
 
 export default (
   <Router>
+    <NavBar />
     <Switch>
       <Route exact path="/" component={Home} />
       <Route exact path="/search" component={Search} />

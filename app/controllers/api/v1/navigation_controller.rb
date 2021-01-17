@@ -1,4 +1,4 @@
-class Api::V1::SearchController < ApplicationController
+class Api::V1::NavigationController < ApplicationController
   before_action :authenticate_user!
 
   def search
