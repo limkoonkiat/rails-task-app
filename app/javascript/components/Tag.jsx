@@ -64,19 +64,20 @@ class Tag extends Component {
 
     return (
       <Container className="py-5">
-        <h1>{"Tag: " + tag.name}</h1>
-
-        <h5>Tagged Tasks</h5>
+        <h1 className="display-4">{"Tag: " + tag.name}</h1>
 
         {this.state.tag_tasks.length > 0
           ?
-          <TasksTable
-            tasks={this.state.tag_tasks}
-            history={this.props.history}
-            page_path={`/tags/${this.props.match.params.id}`}
-          />
+          <>
+            <h4 className="font-weight-normal my-4">Tagged Tasks</h4>
+            <TasksTable
+              tasks={this.state.tag_tasks}
+              history={this.props.history}
+              page_path={`/tags/${this.props.match.params.id}`}
+            />
+          </>
           :
-          <Container className="vw-100 vh-50 d-flex align-items-center justify-content-center">
+          <Container className="m-4 vw-100 vh-50 d-flex align-items-center justify-content-center">
             <h4>No tagged tasks yet.</h4>
           </Container>
         }
@@ -89,7 +90,10 @@ class Tag extends Component {
           <Button variant="danger m-1" onClick={this.deleteTag}>Delete Tag</Button>
 
           <LinkContainer to={"/tags"}>
-            <Button variant="secondary m-1">Back to all Tags</Button>
+            <Button variant="outline-dark m-1">Back to All Tags</Button>
+          </LinkContainer>
+          <LinkContainer to={"/tasks"}>
+            <Button variant="outline-dark m-1">Back to All Tasks</Button>
           </LinkContainer>
         </Row>
       </Container>

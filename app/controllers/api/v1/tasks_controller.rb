@@ -5,8 +5,8 @@ class Api::V1::TasksController < ApplicationController
   # GET /tasks
   # GET /tasks.json
   def index
-    @tasks = Task.all.order(created_at: :desc)
-    @tasks = @tasks.map{|task| task.attributes.merge(tags: Task.find(task.id).tags)} # Workaround for tasks not containing its tags
+    @tasks = current_user.tasks.order(created_at: :desc)
+    @tasks = @tasks.map{|task| task.attributes.merge(tags: task.tags)} # Workaround for tasks not containing its tags
     render json: @tasks
   end
 
@@ -40,7 +40,7 @@ class Api::V1::TasksController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_task
-      @task = Task.find(params[:id])
+      @task = current_user.tasks.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.

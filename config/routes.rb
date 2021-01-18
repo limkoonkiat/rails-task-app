@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, controllers: { registrations: 'registrations', sessions: 'sessions' }
 
   namespace :api do
     namespace :v1 do
@@ -7,6 +7,7 @@ Rails.application.routes.draw do
       resources :tags, except: [:new, :edit]
       
       get 'search' => 'navigation#search'
+      get 'logged_in' => 'currentuser#index'
     end
   end
 

@@ -1,78 +1,75 @@
 import React, { Component } from "react";
 import { LinkContainer } from "react-router-bootstrap";
-import Nav from 'react-bootstrap/Nav'
+import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
+import Logout from './UserLogout';
+import SearchBar from './SearchBar';
 
 class NavBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      query: ""
+      logged_in: false,
+      currentUser: ""
     };
-
-    this.onChange = this.onChange.bind(this);
-    this.onEnter = this.onEnter.bind(this);
   }
 
-  onChange(event) {
-    this.setState({ [event.target.name]: event.target.value });
-  }
-
-  // For search results if users press enter
-  onEnter(event) {
-    if (event.key === 'Enter') {
-      this.props.history.push(`/search?query=${this.state.query}`);
-    }
+  componentDidMount() {
+    const url = '/api/v1/logged_in';
+    fetch(url)
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error("Network response was not ok.");
+      })
+      .then(response => this.setState({ logged_in: response.logged_in, currentUser: response.user }))
+      .catch(() => this.props.history.push("/"));
   }
 
   render() {
     return (
-      <Navbar bg="dark" variant="dark" expand="lg" onKeyDown={this.onEnter}>
+      <Navbar bg="dark" variant="dark" expand="lg">
         <LinkContainer to={"/"}>
           <Navbar.Brand>Task App</Navbar.Brand>
         </LinkContainer>
 
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="mr-auto">
-            <LinkContainer to={"/tasks"}>
-              <Nav.Link>Tasks</Nav.Link>
-            </LinkContainer>
-            <LinkContainer to={"/tasks/new"}>
-              <Nav.Link>Add Task</Nav.Link>
-            </LinkContainer>
-            <LinkContainer to={"/tags"}>
-              <Nav.Link>Tags</Nav.Link>
-            </LinkContainer>
-            <LinkContainer to={"/tags/new"}>
-              <Nav.Link>Add Tag</Nav.Link>
-            </LinkContainer>
-          </Nav>
-          <Form inline>
-            <Form.Control
-              type="text"
-              placeholder="Search Tasks"
-              className="mr-sm-2"
-              name="query"
-              required
-              value={this.state.query}
-              onChange={this.onChange}
-            />
-
-            {/* NOTE: Everything after the ? in the url is called "query string parameters" i.e. query=${this.state.query} here.
-            It is automatically available in the params hash in the controller thus we can just link like that with the query data passed on.
-            See part 4 parameters at https://guides.rubyonrails.org/action_controller_overview.html#http-basic-authentication */}
-            <LinkContainer to={`/search?query=${this.state.query}`} >
-              <Button variant="info">Search</Button>
-            </LinkContainer>
-          </Form>
+          {this.state.logged_in
+            ?
+            <>
+              <Nav className="mr-auto">
+                <LinkContainer to={"/tasks"}>
+                  <Nav.Link>Tasks</Nav.Link>
+                </LinkContainer>
+                <LinkContainer to={"/tasks/new"}>
+                  <Nav.Link>Add Task</Nav.Link>
+                </LinkContainer>
+                <LinkContainer to={"/tags"}>
+                  <Nav.Link>Tags</Nav.Link>
+                </LinkContainer>
+                <LinkContainer to={"/tags/new"}>
+                  <Nav.Link>Add Tag</Nav.Link>
+                </LinkContainer>
+                <Logout />
+              </Nav>
+              <SearchBar />
+            </>
+            :
+            <Nav className="mr-auto">
+              <LinkContainer to={"/users/sign_up"}>
+                <Nav.Link>Sign Up</Nav.Link>
+              </LinkContainer>
+              <LinkContainer to={"/users/sign_in"}>
+                <Nav.Link>Log In</Nav.Link>
+              </LinkContainer>
+            </Nav>
+          }
         </Navbar.Collapse>
       </Navbar>
     );
   }
-
 }
 
 export default NavBar;

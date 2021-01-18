@@ -5,14 +5,14 @@ class Api::V1::TagsController < ApplicationController
   # GET /tags
   # GET /tags.json
   def index
-    @tags = Tag.all.order(created_at: :desc)
+    @tags = current_user.tags.order(created_at: :desc)
     render json: @tags
   end
 
   # GET /tags/1
   # GET /tags/1.json
   def show
-    @tag_tasks = @tag.tasks.map{|task| task.attributes.merge(tags: Task.find(task.id).tags)} # Workaround for tasks not containing its tags
+    @tag_tasks = @tag.tasks.map{|task| task.attributes.merge(tags: task.tags)} # Workaround for tasks not containing its tags
     render json: {tag: @tag, tag_tasks: @tag_tasks}
   end
 
@@ -40,7 +40,7 @@ class Api::V1::TagsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_tag
-      @tag = Tag.find(params[:id])
+      @tag = current_user.tags.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.

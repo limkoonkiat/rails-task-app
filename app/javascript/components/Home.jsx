@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { LinkContainer } from "react-router-bootstrap";
-import NavBar from "./NavBar";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Jumbotron from 'react-bootstrap/Jumbotron';
@@ -8,6 +7,24 @@ import Jumbotron from 'react-bootstrap/Jumbotron';
 class Home extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      logged_in: false,
+      currentUser: ""
+    };
+  }
+
+  componentDidMount() {
+    const url = '/api/v1/logged_in';
+    fetch(url)
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error("Network response was not ok.");
+      })
+      .then(response => this.setState({ logged_in: response.logged_in, currentUser: response.user }))
+      .catch(() => this.props.history.push("/"));
   }
 
   render() {
@@ -15,17 +32,32 @@ class Home extends Component {
       <div className="vw-100 vh-100 primary-color d-flex align-items-center justify-content-center">
         <Jumbotron fluid className="bg-white">
           <Container>
-            <h1 className="display-4">Welcome!</h1>
+            <h1 className="display-3">Welcome!</h1>
             <p className="lead">
-              Task tracker.
+              {this.state.logged_in ? "View your tasks and tags" : "Sign up or log in to get started"}
               </p>
             <hr className="my-4" />
-            <LinkContainer to="/tasks">
-              <Button variant="dark m-1" size="lg">View Tasks</Button>
-            </LinkContainer>
-            <LinkContainer to="/tags">
-              <Button variant="dark m-1" size="lg">View Tags</Button>
-            </LinkContainer>
+
+            {this.state.logged_in
+              ?
+              <>
+                <LinkContainer to="/tasks">
+                  <Button variant="dark m-1" size="lg">View Tasks</Button>
+                </LinkContainer>
+                <LinkContainer to="/tags">
+                  <Button variant="dark m-1" size="lg">View Tags</Button>
+                </LinkContainer>
+              </>
+              :
+              <>
+                <LinkContainer to="/users/sign_up">
+                  <Button variant="dark m-1" size="lg">Sign Up</Button>
+                </LinkContainer>
+                <LinkContainer to="/users/sign_in">
+                  <Button variant="dark m-1" size="lg">Log In</Button>
+                </LinkContainer>
+              </>
+            }
           </Container>
         </Jumbotron>
       </div>

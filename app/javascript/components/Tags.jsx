@@ -95,7 +95,10 @@ class Tags extends Component {
         </Row>
 
         <LinkContainer to={"/"}>
-          <Button variant="primary mt-3">Home</Button>
+          <Button variant="primary m-1">Home</Button>
+        </LinkContainer>
+        <LinkContainer to={`/tasks`}>
+          <Button variant="secondary m-1">To All Tasks</Button>
         </LinkContainer>
       </Container>
     );

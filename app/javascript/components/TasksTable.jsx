@@ -87,7 +87,7 @@ class TasksTable extends Component {
             <tr key={index}>
               <td>{task.name}</td>
               <td>{task.description}</td>
-              <td>{task.date.toLocaleString()}</td>
+              <td>{new Date(task.date).toLocaleString().split(",")[0]}</td>
               <td>
                 {
                   task.completed
@@ -101,9 +101,9 @@ class TasksTable extends Component {
                     ? task.tags.map(tag => (
                       // Link/LinkContainer to other tags does not seem to work if the front part of the route is the same. 
                       // E.g. clicking on tag 15 in the task table while in "/tags/14" will not load "/tags/15". 
-                      // Had to use window.location.href to manually load the new tag page.
-                      <LinkContainer to={`/tags/${tag.id}`} key={tag.id} onClick={() => { window.location.href = ("/tags/" + tag.id) }}>
-                        <Button variant="info m-1" >{tag.name}</Button>
+                      // Had to use window.location to manually load the new tag page.
+                      <LinkContainer to={`/tags/${tag.id}`} key={tag.id} onClick={() => { window.location = ("/tags/" + tag.id) }}>
+                        <Button variant="info m-1" key={tag.id}>{tag.name}</Button>
                       </LinkContainer>
                     ))
                     : ""

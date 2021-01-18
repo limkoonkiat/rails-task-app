@@ -50,7 +50,10 @@ class Tasks extends Component {
         }
 
         <LinkContainer to={`/`}>
-          <Button variant="primary">Home</Button>
+          <Button variant="primary m-1">Home</Button>
+        </LinkContainer>
+        <LinkContainer to={`/tags`}>
+          <Button variant="secondary m-1">To All Tags</Button>
         </LinkContainer>
       </Container>
     );

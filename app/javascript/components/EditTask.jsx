@@ -18,6 +18,36 @@ class EditTask extends Component {
     this.handleMultipleTagCheckboxes = this.handleMultipleTagCheckboxes.bind(this);
   }
 
+  componentDidMount() {
+    // For all tags
+    fetch('/api/v1/tags')
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error("Network response was not ok.");
+      })
+      .then(response => this.setState({ allTags: response }))
+      .catch(() => this.props.history.push("/"));    
+
+    // For task
+    fetch(`/api/v1/tasks/${this.props.match.params.id}`)
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error("Network response was not ok.");
+      })
+      .then(response => this.setState({
+        name: response.task.name,
+        description: response.task.description,
+        date: response.task.date,
+        completed: response.task.completed,
+        tag_ids: response.task_tags.map(tag => tag.id)
+      }))
+      .catch(() => this.props.history.push("/tasks"));    
+  }
+
   onChange(event) {
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -81,37 +111,6 @@ class EditTask extends Component {
       })
       .then(response => this.props.history.push(`/tasks/${response.id}`))
       .catch(error => console.log(error.message));
-  }
-
-  componentDidMount() {
-
-    // For all tags
-    fetch('/api/v1/tags')
-      .then(response => {
-        if (response.ok) {
-          return response.json();
-        }
-        throw new Error("Network response was not ok.");
-      })
-      .then(response => this.setState({ allTags: response }))
-      .catch(() => this.props.history.push("/"));
-
-    // For task
-    fetch(`/api/v1/tasks/${this.props.match.params.id}`)
-      .then(response => {
-        if (response.ok) {
-          return response.json();
-        }
-        throw new Error("Network response was not ok.");
-      })
-      .then(response => this.setState({
-        name: response.task.name,
-        description: response.task.description,
-        date: response.task.date,
-        completed: response.task.completed,
-        tag_ids: response.task_tags.map(tag => tag.id)
-      }))
-      .catch(() => this.props.history.push("/tasks"));
   }
 
   render() {
