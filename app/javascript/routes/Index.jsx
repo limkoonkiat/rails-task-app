@@ -44,7 +44,7 @@ class Index extends Component {
 
         <Switch>
           <Route exact path="/" component={Home} />
-          <Route exact path="/search" component={this.state.logged_in ? Search : Home} />
+          <Route exact path="/search" component={Search} />
 
           <Route exact path="/tasks" component={this.state.logged_in ? Tasks : Home} />
           <Route exact path="/tasks/new" component={this.state.logged_in ? NewTask : Home} />
