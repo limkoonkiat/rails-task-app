@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import TaskForm from "./TaskForm";
+import LoadingSpinner from './LoadingSpinner';
 
 class EditTask extends Component {
   constructor(props) {
@@ -10,7 +11,8 @@ class EditTask extends Component {
       date: new Date(Date.now()).toISOString().slice(0, 10),
       completed: false,
       tag_ids: [],
-      allTags: []
+      allTags: [],
+      isLoaded: false
     };
 
     this.onChange = this.onChange.bind(this);
@@ -28,7 +30,7 @@ class EditTask extends Component {
         throw new Error("Network response was not ok.");
       })
       .then(response => this.setState({ allTags: response }))
-      .catch(() => this.props.history.push("/"));    
+      .catch(() => this.props.history.push("/"));
 
     // For task
     fetch(`/api/v1/tasks/${this.props.match.params.id}`)
@@ -43,9 +45,10 @@ class EditTask extends Component {
         description: response.task.description,
         date: response.task.date,
         completed: response.task.completed,
-        tag_ids: response.task_tags.map(tag => tag.id)
+        tag_ids: response.task_tags.map(tag => tag.id),
+        isLoaded: true
       }))
-      .catch(() => this.props.history.push("/tasks"));    
+      .catch(() => this.props.history.push("/tasks"));
   }
 
   onChange(event) {
@@ -114,18 +117,24 @@ class EditTask extends Component {
   }
 
   render() {
-    return (
-      <TaskForm
-        onSubmit={this.onSubmit}
-        onChange={this.onChange}
-        handleMultipleTagCheckboxes={this.handleMultipleTagCheckboxes}
-        data={this.state}
-        form_title="Edit Task"
-        submit_button_label="Update Task"
-        cancel_path={`/tasks/${this.props.match.params.id}`}
-        cancel_button_label="Back to Task"
-      />
-    );
+    if (this.state.isLoaded) {
+      return (
+        <TaskForm
+          onSubmit={this.onSubmit}
+          onChange={this.onChange}
+          handleMultipleTagCheckboxes={this.handleMultipleTagCheckboxes}
+          data={this.state}
+          form_title="Edit Task"
+          submit_button_label="Update Task"
+          cancel_path={`/tasks/${this.props.match.params.id}`}
+          cancel_button_label="Back to Task"
+        />
+      );
+    } else {
+      return (
+        <LoadingSpinner />
+      );
+    }
   }
 }
 

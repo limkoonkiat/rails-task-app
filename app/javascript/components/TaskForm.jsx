@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
@@ -65,19 +66,24 @@ export default function TaskForm(props) {
           <Form.Group controlId="taskTags">
             Tags
             <small> (You can select more than one)</small>
-            {props.data.allTags.map(tag => {
-              return <div key={tag.id} className="m-3">
-                <Form.Check
-                  name={"task_tag_ids_" + tag.id.toString()}
-                  type="checkbox"
-                  label={tag.name}
-                  id={"task_tag_ids_" + tag.id.toString()}
-                  defaultChecked={props.data.tag_ids.includes(tag.id)}
-                  value={tag.id}
-                  onChange={props.handleMultipleTagCheckboxes}
-                />
-              </div>
-            })}
+            {props.data.allTags.length > 0
+              ?
+              props.data.allTags.map(tag => {
+                return <div key={tag.id} className="m-3">
+                  <Form.Check
+                    name={"task_tag_ids_" + tag.id.toString()}
+                    type="checkbox"
+                    label={tag.name}
+                    id={"task_tag_ids_" + tag.id.toString()}
+                    defaultChecked={props.data.tag_ids.includes(tag.id)}
+                    value={tag.id}
+                    onChange={props.handleMultipleTagCheckboxes}
+                  />
+                </div>
+              })
+              : <Container>You currently have no tags. <Link to="/tags/new">Create one</Link></Container>
+            }
+
           </Form.Group>
 
           <Button type="submit" variant="dark m-1">

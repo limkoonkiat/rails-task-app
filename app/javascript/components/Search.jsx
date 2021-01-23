@@ -2,13 +2,15 @@ import React, { Component } from "react";
 import { LinkContainer } from 'react-router-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
-import TasksTable from "./TasksTable";
+import TasksTable from './TasksTable';
+import LoadingSpinner from './LoadingSpinner';
 
 class Search extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      results: []
+      results: [],
+      isLoaded: false
     };
   }
 
@@ -21,34 +23,40 @@ class Search extends Component {
         }
         throw new Error("Network response was not ok.");
       })
-      .then(response => this.setState({ results: response }))
+      .then(response => this.setState({ results: response, isLoaded: true }))
       .catch(() => this.props.history.push("/"));
   }
 
   render() {
-    return (
-      <Container className="py-5">
-        <h1 className="display-4">Search Results</h1>
+    if (this.state.isLoaded) {
+      return (
+        <Container className="py-5">
+          <h1 className="display-4">Search Results</h1>
 
-        {this.state.results.length > 0
+          {this.state.results.length > 0
 
-          ?
-          <TasksTable
-            tasks={this.state.results}
-            history={this.props.history}
-            page_path={"/search" + window.location.href.split("/search")[1]} // Get the url from /search onwards
-          />
-          :
-          <Container className="vw-100 vh-50 d-flex align-items-center justify-content-center">
-            <h4>No tasks found.</h4>
-          </Container>
-        }
+            ?
+            <TasksTable
+              tasks={this.state.results}
+              history={this.props.history}
+              page_path={"/search" + window.location.href.split("/search")[1]} // Get the url from /search onwards
+            />
+            :
+            <Container className="vw-100 vh-50 d-flex align-items-center justify-content-center">
+              <h4>No tasks found.</h4>
+            </Container>
+          }
 
-        <LinkContainer to={`/`}>
-          <Button variant="primary">Home</Button>
-        </LinkContainer>
-      </Container>
-    );
+          <LinkContainer to={`/`}>
+            <Button variant="primary">Home</Button>
+          </LinkContainer>
+        </Container>
+      );
+    } else {
+      return (
+        <LoadingSpinner />
+      );
+    }
   }
 }
 

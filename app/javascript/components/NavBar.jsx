@@ -10,7 +10,8 @@ class NavBar extends Component {
     super(props);
     this.state = {
       logged_in: false,
-      currentUser: ""
+      currentUser: "",
+      isLoaded: false
     };
   }
 
@@ -23,52 +24,56 @@ class NavBar extends Component {
         }
         throw new Error("Network response was not ok.");
       })
-      .then(response => this.setState({ logged_in: response.logged_in, currentUser: response.user }))
+      .then(response => this.setState({ logged_in: response.logged_in, currentUser: response.user, isLoaded: true }))
       .catch(() => this.props.history.push("/"));
   }
 
   render() {
-    return (
-      <Navbar bg="dark" variant="dark" expand="lg">
-        <LinkContainer to={"/"}>
-          <Navbar.Brand>Task App</Navbar.Brand>
-        </LinkContainer>
+    if (this.state.isLoaded) {
+      return (
+        <Navbar bg="dark" variant="dark" expand="lg">
+          <LinkContainer to={"/"}>
+            <Navbar.Brand>Task App</Navbar.Brand>
+          </LinkContainer>
 
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          {this.state.logged_in
-            ?
-            <>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            {this.state.logged_in
+              ?
+              <>
+                <Nav className="mr-auto">
+                  <LinkContainer to={"/tasks"}>
+                    <Nav.Link>Tasks</Nav.Link>
+                  </LinkContainer>
+                  <LinkContainer to={"/tasks/new"}>
+                    <Nav.Link>Add Task</Nav.Link>
+                  </LinkContainer>
+                  <LinkContainer to={"/tags"}>
+                    <Nav.Link>Tags</Nav.Link>
+                  </LinkContainer>
+                  <LinkContainer to={"/tags/new"}>
+                    <Nav.Link>Add Tag</Nav.Link>
+                  </LinkContainer>
+                  <Logout />
+                </Nav>
+                <SearchBar />
+              </>
+              :
               <Nav className="mr-auto">
-                <LinkContainer to={"/tasks"}>
-                  <Nav.Link>Tasks</Nav.Link>
+                <LinkContainer to={"/users/sign_up"}>
+                  <Nav.Link>Sign Up</Nav.Link>
                 </LinkContainer>
-                <LinkContainer to={"/tasks/new"}>
-                  <Nav.Link>Add Task</Nav.Link>
+                <LinkContainer to={"/users/sign_in"}>
+                  <Nav.Link>Log In</Nav.Link>
                 </LinkContainer>
-                <LinkContainer to={"/tags"}>
-                  <Nav.Link>Tags</Nav.Link>
-                </LinkContainer>
-                <LinkContainer to={"/tags/new"}>
-                  <Nav.Link>Add Tag</Nav.Link>
-                </LinkContainer>
-                <Logout />
               </Nav>
-              <SearchBar />
-            </>
-            :
-            <Nav className="mr-auto">
-              <LinkContainer to={"/users/sign_up"}>
-                <Nav.Link>Sign Up</Nav.Link>
-              </LinkContainer>
-              <LinkContainer to={"/users/sign_in"}>
-                <Nav.Link>Log In</Nav.Link>
-              </LinkContainer>
-            </Nav>
-          }
-        </Navbar.Collapse>
-      </Navbar>
-    );
+            }
+          </Navbar.Collapse>
+        </Navbar>
+      );
+    } else {
+      return null;
+    }
   }
 }
 

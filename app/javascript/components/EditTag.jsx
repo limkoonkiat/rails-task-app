@@ -1,10 +1,14 @@
 import React, { Component } from "react";
 import TagForm from "./TagForm";
+import LoadingSpinner from './LoadingSpinner';
 
 class EditTag extends Component {
   constructor(props) {
     super(props);
-    this.state = { name: "" };
+    this.state = { 
+      name: "",
+      isLoaded: false
+   };
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -57,22 +61,28 @@ class EditTag extends Component {
         }
         throw new Error("Network response was not ok.");
       })
-      .then(response => this.setState({ name: response.tag.name }))
+      .then(response => this.setState({ name: response.tag.name, isLoaded: true }))
       .catch(() => this.props.history.push("/tags"));
   }
 
   render() {
-    return (
-      <TagForm
-        onSubmit={this.onSubmit}
-        onChange={this.onChange}
-        data={this.state}
-        form_title="Edit Tag"
-        submit_button_label="Update Tag"
-        cancel_path={`/tags/${this.props.match.params.id}`}
-        cancel_button_label="Back to Tag"
-      />
-    );
+    if (this.state.isLoaded) {
+      return (
+        <TagForm
+          onSubmit={this.onSubmit}
+          onChange={this.onChange}
+          data={this.state}
+          form_title="Edit Tag"
+          submit_button_label="Update Tag"
+          cancel_path={`/tags/${this.props.match.params.id}`}
+          cancel_button_label="Back to Tag"
+        />
+      );
+    } else {
+      return (
+        <LoadingSpinner />
+      );
+    }
   }
 }
 

@@ -44,28 +44,31 @@ class TasksTable extends Component {
   }
 
   deleteTask(event) {
-    const target = event.target;
-    const id = target.value;
+    if (window.confirm("Delete this task?")) {
 
-    const url = `/api/v1/tasks/${id}`;
-    const token = document.querySelector('meta[name="csrf-token"]').content;
+      const target = event.target;
+      const id = target.value;
 
-    fetch(url, {
-      method: "DELETE",
-      headers: {
-        "X-CSRF-Token": token,
-        "Content-Type": "application/json"
-      }
-    })
-      .then(response => {
-        if (response.ok) {
-          return response.json();
+      const url = `/api/v1/tasks/${id}`;
+      const token = document.querySelector('meta[name="csrf-token"]').content;
+
+      fetch(url, {
+        method: "DELETE",
+        headers: {
+          "X-CSRF-Token": token,
+          "Content-Type": "application/json"
         }
-        throw new Error("Network response was not ok.");
       })
-      .then(() => this.props.history.push("/")) // Force refresh of tasks page by going to the homepage first
-      .then(() => this.props.history.push(this.props.page_path))
-      .catch(error => console.log(error.message));
+        .then(response => {
+          if (response.ok) {
+            return response.json();
+          }
+          throw new Error("Network response was not ok.");
+        })
+        .then(() => this.props.history.push("/")) // Force refresh of tasks page by going to the homepage first
+        .then(() => this.props.history.push(this.props.page_path))
+        .catch(error => console.log(error.message));
+    }
   }
 
   render() {
@@ -87,7 +90,7 @@ class TasksTable extends Component {
             <tr key={index}>
               <td>{task.name}</td>
               <td>{task.description}</td>
-              <td>{new Date(task.date).toLocaleString().split(",")[0]}</td>
+              <td>{new Date(task.date).toLocaleDateString("en-SG")}</td>
               <td>
                 {
                   task.completed
@@ -102,9 +105,7 @@ class TasksTable extends Component {
                       // Link/LinkContainer to other tags does not seem to work if the front part of the route is the same. 
                       // E.g. clicking on tag 15 in the task table while in "/tags/14" will not load "/tags/15". 
                       // Had to use window.location to manually load the new tag page.
-                      <LinkContainer to={`/tags/${tag.id}`} key={tag.id} onClick={() => { window.location = ("/tags/" + tag.id) }}>
-                        <Button variant="info m-1" key={tag.id}>{tag.name}</Button>
-                      </LinkContainer>
+                      <Button variant="info m-1" key={tag.id} onClick={() => { window.location = ("/tags/" + tag.id) }}>{tag.name}</Button>
                     ))
                     : ""
                 }
