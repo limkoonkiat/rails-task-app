@@ -88,16 +88,22 @@ class TasksTable extends Component {
         <tbody>
           {this.props.tasks.map((task, index) => (
             <tr key={index}>
-              <td>{task.name}</td>
-              <td>{task.description}</td>
-              <td>{new Date(task.date).toLocaleDateString("en-SG")}</td>
-              <td>
-                {
-                  task.completed
-                    ? <Button variant="success m-1" onClick={this.toggleTaskComplete} value={task.id}>Completed</Button>
-                    : <Button variant="warning m-1" onClick={this.toggleTaskComplete} value={task.id}>Incomplete</Button>
-                }
-              </td>
+              {task.completed
+                ?
+                <>
+                  <td><del>{task.name}</del></td>
+                  <td><del>{task.description}</del></td>
+                  <td><del>{new Date(task.date).toLocaleDateString("en-SG")}</del></td>
+                  <td><Button variant="success m-1" onClick={this.toggleTaskComplete} value={task.id}>Completed</Button></td>
+                </>
+                :
+                <>
+                  <td>{task.name}</td>
+                  <td>{task.description}</td>
+                  <td>{new Date(task.date).toLocaleDateString("en-SG")}</td>
+                  <td><Button variant="warning m-1" onClick={this.toggleTaskComplete} value={task.id}>Incomplete</Button></td>
+                </>
+              }
               <td>
                 {
                   task.tags.length != 0
