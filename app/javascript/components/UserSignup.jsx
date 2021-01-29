@@ -125,6 +125,7 @@ class UserSignup extends Component {
 
             <Form.Group controlId="userPassword">
               <Form.Label>Password</Form.Label>
+              <small> (At least 6 characters long)</small>
               <Form.Control
                 name="password"
                 type="password"
